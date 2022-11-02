@@ -1,0 +1,73 @@
+version: "3.9" # optional since v1.27.0
+services:
+  grenache-grape-node1: 
+    build: 
+      context: ./grenache
+      dockerfile: ./docker/Dockerfile
+    environment:
+      - DP_PORT=20001
+      - AP_PORT=30001
+      - GRAPE_NODE='127.0.0.1:20002'
+    network_mode: "host"
+    expose:
+      - 20001
+      - 30001
+    ports:
+      - 20001:20001
+      - 30001:30001
+  grenache-grape-node2: 
+    build: 
+      context: ./grenache
+      dockerfile: ./docker/Dockerfile
+    depends_on:
+      - grenache-grape-node1
+    network_mode: "host"
+    environment:
+      - DP_PORT=20002
+      - AP_PORT=40001
+      - GRAPE_NODE='127.0.0.1:20001'
+    expose:
+      - 20002
+      - 40001
+    ports:
+      - 20002:20002
+      - 40001:40001
+  server: 
+    build: 
+      context: ./server
+      dockerfile: ./docker/Dockerfile
+    depends_on:
+      - grenache-grape-node1
+      - grenache-grape-node2
+    network_mode: "host"
+    environment:
+      - GRAPE_NODE=127.0.0.1:30001
+  client: 
+    build: 
+      context: ./client
+      dockerfile: ./docker/Dockerfile
+    network_mode: "host"
+    restart: on-failure
+    depends_on:
+      - grenache-grape-node1
+      - grenache-grape-node2
+      - server
+    environment:
+      - GRAPE_NODE=127.0.0.1:30001
+      - CLIENT_ID=1
+  client2: 
+    build: 
+      context: ./client
+      dockerfile: ./docker/Dockerfile
+    network_mode: "host"
+    restart: on-failure
+    depends_on:
+      - grenache-grape-node1
+      - grenache-grape-node2
+      - server
+    environment:
+      - GRAPE_NODE=127.0.0.1:30001
+      - CLIENT_ID=2
+
+
+

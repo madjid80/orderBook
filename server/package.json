@@ -1,0 +1,19 @@
+{
+    "name": "grenache-nodejs-example-fib-server",
+    "version": "1.0.1",
+    "description": "A simple example for grenache",
+    "main": "server.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+      "grenache",
+      "DHT"
+    ],
+    "author": "Robert Kowalski <rok@kowalski.gd>",
+    "license": "MIT",
+    "dependencies": {
+      "grenache-nodejs-link": "^0.5.0",
+      "grenache-nodejs-ws": "^0.5.0"
+    }
+  }
